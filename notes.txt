@@ -1,0 +1,2 @@
+Followed these instructions to deploy to Heroku: https://www.youtube.com/watch?v=MxfxiR8TVNU
+However there is a limit for free account of only 5 apps.

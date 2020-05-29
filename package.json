@@ -1,12 +1,14 @@
 {
-  "name": "avalon-js",
+  "name": "avalon-fork",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js localhost 8080"
   },
-  "dependencies": {},
+  "dependencies": {
+    "node-mailjet": "3.3.1"
+  },
   "devDependencies": {
     "nodemon": "1.18.4"
   },
