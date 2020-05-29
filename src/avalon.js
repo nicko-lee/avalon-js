@@ -5,7 +5,7 @@ const ninePlayerDeck = require("./shuffleDeck").ninePlayerDeck;
 const tenPlayerDeck = require("./shuffleDeck").tenPlayerDeck;
 
 function dealCards(numberOfPlayers) {
-  var dealtCards = new Map();
+  var dealtCards = {};
   var newGameDeck;
 
   if (numberOfPlayers === 8) {
@@ -22,7 +22,7 @@ function dealCards(numberOfPlayers) {
     // console.log(card);
 
     // add dealt card to set
-    dealtCards.set(index, card);
+    dealtCards[index] = card;
   });
 
   // return dealt cards
