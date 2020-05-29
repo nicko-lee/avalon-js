@@ -1,6 +1,7 @@
 var http = require("http");
 var url = require("url");
 const dealCards = require("./avalon.js").dealCards;
+var PORT = process.env.PORT || 8080
 
 //create a server object:
 var server = http.createServer(function(req, res) {
@@ -22,7 +23,7 @@ var server = http.createServer(function(req, res) {
   }
   res.end();
 });
-server.listen(8080);
+server.listen(PORT);
 
 function dealCardsAndStringify(players) {
   var dealt = dealCards(players);
