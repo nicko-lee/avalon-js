@@ -3,31 +3,36 @@ const mailjet = require("node-mailjet").connect(
   process.env.SECRET_KEY
 );
 
-const request = mailjet.post("send", { version: "v3.1" }).request({
-  Messages: [
-    {
-      From: {
-        Email: process.env.EMAIL,
-        Name: "Nala"
-      },
-      To: [
+function sendEmail(recipient, character) {
+  return mailjet
+    .post("send", { version: "v3.1" })
+    .request({
+      Messages: [
         {
-          Email: process.env.EMAIL,
-          Name: "Nala"
+          From: {
+            Email: process.env.EMAIL,
+            Name: "The Dealer"
+          },
+          To: [
+            {
+              Email: recipient
+            }
+          ],
+          Subject: "Your Avalon Character",
+          TextPart: "You were dealt: " + character,
+          HTMLPart: ""
         }
-      ],
-      Subject: "Greetings from Mailjet.",
-      TextPart: "My first Mailjet email",
-      HTMLPart:
-        "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-      CustomID: "AppGettingStartedTest"
-    }
-  ]
-});
-request
-  .then(result => {
-    console.log(result.body);
-  })
-  .catch(err => {
-    console.log(err.statusCode);
-  });
+      ]
+    })
+    .then(result => {
+      // do something with the send result or ignore
+      console.log(result.body);
+    })
+    .catch(err => {
+      // handle an error
+      console.log(err.statusCode, err.Messages, err.Subject);
+    });
+}
+
+// export from file so I can import it in avalon.js
+module.exports = { sendEmail };
