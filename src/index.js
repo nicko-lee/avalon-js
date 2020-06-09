@@ -34,6 +34,28 @@ app.post("/", (req, res) => {
 
 // ACTUAL AVALON ENDPOINTS
 
+// to prevent v1 of app still working
+// going to kill previous server cos GAE was charging me a lot for some reason??
+// eventhough my app barely received any traffic whatsover...
+app.get("/api/v1/dealCards", (req, res) => {
+  const tenPlayerDeck = [
+    "Merlin",
+    "Percival",
+    "Loyal Servant",
+    "Loyal Servant",
+    "Loyal Servant",
+    "Loyal Servant",
+    "Assassin",
+    "Minion",
+    "Minion",
+    "Minion"
+  ];
+  let shuffledCards = shuffle(tenPlayerDeck);
+  let dealt = dealCards(shuffledCards);
+  res.send(dealt);
+  console.log("Request received on GET /api/v1/dealCards");
+});
+
 app.post("/api/dealCards", (req, res) => {
   // (1) input validation on what client sends server
   const FormSchema = {
