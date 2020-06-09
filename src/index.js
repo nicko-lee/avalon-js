@@ -33,25 +33,25 @@ app.post("/", (req, res) => {
 });
 
 // ACTUAL AVALON ENDPOINTS
-const FormSchema = {
-  merlin: Joi.number()
-    .min(1)
-    .required(),
-  percival: Joi.number(),
-  loyalServant: Joi.number()
-    .min(1)
-    .required(),
-  assassin: Joi.number(),
-  minion: Joi.number()
-    .min(1)
-    .required(),
-  morgana: Joi.number(),
-  mordred: Joi.number(),
-  oberon: Joi.number()
-};
 
 app.post("/api/dealCards", (req, res) => {
   // (1) input validation on what client sends server
+  const FormSchema = {
+    merlin: Joi.number()
+      .min(1)
+      .required(),
+    percival: Joi.number(),
+    loyalServant: Joi.number()
+      .min(1)
+      .required(),
+    assassin: Joi.number(),
+    minion: Joi.number()
+      .min(1)
+      .required(),
+    morgana: Joi.number(),
+    mordred: Joi.number(),
+    oberon: Joi.number()
+  };
   const result = Joi.validate(req.body, FormSchema);
 
   if (result.error) {
@@ -81,9 +81,63 @@ app.post("/api/dealCards", (req, res) => {
 
 app.post("/api/dealAndDistribute", (req, res) => {
   // (1) TODO: input validation on what client sends server
+  const FormSchema = {
+    formData: {
+      merlin: Joi.number()
+        .min(1)
+        .required(),
+      percival: Joi.number(),
+      loyalServant: Joi.number()
+        .min(1)
+        .required(),
+      assassin: Joi.number(),
+      minion: Joi.number()
+        .min(1)
+        .required(),
+      morgana: Joi.number(),
+      mordred: Joi.number(),
+      oberon: Joi.number()
+    },
+    emails: {
+      password: Joi.string().required(),
+      "Player 1": Joi.string(),
+      "Player 2": Joi.string(),
+      "Player 3": Joi.string(),
+      "Player 4": Joi.string(),
+      "Player 5": Joi.string(),
+      "Player 6": Joi.string(),
+      "Player 7": Joi.string(),
+      "Player 8": Joi.string(),
+      "Player 9": Joi.string(),
+      "Player 10": Joi.string(),
+      "Player 11": Joi.string(),
+      "Player 12": Joi.string(),
+      "Player 13": Joi.string(),
+      "Player 14": Joi.string(),
+      "Player 15": Joi.string(),
+      "Player 16": Joi.string(),
+      "Player 17": Joi.string(),
+      "Player 18": Joi.string(),
+      "Player 19": Joi.string(),
+      "Player 20": Joi.string()
+    }
+  };
+
+  const result = Joi.validate(req.body, FormSchema);
+
+  if (result.error) {
+    res.status(400).send(result.error);
+    return;
+  }
+
+  // if wrong password just return and don't send emails or anything
+  if (req.body.emails["password"] !== process.env.PASSWORD) {
+    console.log("Wrong password");
+    res.status(400).send("Wrong password");
+    return;
+  }
 
   console.log(req.body);
-  console.log("emails: ", req.body.emails["Player 1"]);
   res.send("Hey this is a new endpoint");
 
   // (2) some basic logging on server
@@ -100,7 +154,7 @@ app.post("/api/dealAndDistribute", (req, res) => {
     let recipientEmail = req.body.emails["Player " + playerIndex];
     console.log("Ran from forEach", recipientEmail);
     console.log(item);
-    sendEmail(recipientEmail, item);
+    sendEmail(recipientEmail, item); // careful there is 200 email/day limit
   });
 });
 

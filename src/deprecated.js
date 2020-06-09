@@ -179,3 +179,5 @@ app.post("/api/courses", (req, res) => {
   courses.push(course);
   res.send(course);
 });
+
+// console.log("emails: ", req.body.emails["Player 1"]);
