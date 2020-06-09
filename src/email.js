@@ -3,7 +3,7 @@ const mailjet = require("node-mailjet").connect(
   process.env.SECRET_KEY
 );
 
-function sendEmail(recipient, character) {
+function sendEmail(recipient, character, message) {
   return mailjet
     .post("send", { version: "v3.1" })
     .request({
@@ -19,7 +19,7 @@ function sendEmail(recipient, character) {
             }
           ],
           Subject: "Your Avalon Character",
-          TextPart: "You were dealt: " + character,
+          TextPart: `You were dealt: ${character}. Here is what you need to know: ${message}`,
           HTMLPart: ""
         }
       ]

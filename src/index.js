@@ -169,14 +169,57 @@ app.post("/api/dealAndDistribute", (req, res) => {
   let cardsFromUser = convUserSubmittedFormDataToArray(req.body.formData);
   let shuffledCards = shuffle(cardsFromUser);
   console.log("Shuffled cards: ", shuffledCards);
+  let emails = req.body.emails;
 
-  // (4) send out email with each player's dealt cards!
+  // (4) Logic to get additional info that players need
+  let infoForMerlin = [];
+  let infoForPercival = [];
+  let infoForMinions = [];
   shuffledCards.forEach((item, index) => {
     let playerIndex = index + 1;
-    let recipientEmail = req.body.emails["Player " + playerIndex];
+    let recipientEmail = emails["Player " + playerIndex];
+    if (item === "minion" || item === "assassin" || item === "morgana") {
+      infoForMerlin.push(`${recipientEmail} is a ${item}`);
+      infoForMinions.push(`${recipientEmail} is a ${item}`);
+    } else if (item === "merlin" || item === "morgana") {
+      infoForPercival.push(`${recipientEmail} is ${item}`);
+    } else if (item === "mordred") {
+      infoForMinions.push(`${recipientEmail} is ${item}`);
+    } else if (item === "oberon") {
+      infoForMerlin.push(`${recipientEmail} is a ${item}`);
+    }
+  });
+
+  // (5) send out email with each player's dealt cards!
+  shuffledCards.forEach((item, index) => {
+    let playerIndex = index + 1;
+    let recipientEmail = emails["Player " + playerIndex];
     console.log("Ran from forEach", recipientEmail);
     console.log(item);
-    sendEmail(recipientEmail, item); // careful there is 200 email/day limit
+    if (
+      item === "minion" ||
+      item === "assassin" ||
+      item === "morgana" ||
+      item === "mordred"
+    ) {
+      sendEmail(recipientEmail, item, infoForMinions); // careful there is 200 email/day limit
+    } else if (item === "merlin") {
+      sendEmail(recipientEmail, item, infoForMerlin);
+    } else if (item === "percival") {
+      sendEmail(recipientEmail, item, infoForPercival);
+    } else if (item === "loyalServant") {
+      sendEmail(
+        recipientEmail,
+        item,
+        "unfortunately since you are loyal servant you don't get any additional info."
+      );
+    } else if (item === "oberon") {
+      sendEmail(
+        recipientEmail,
+        item,
+        "unfortunately since you are oberon you don't get any additional info nor do you get to know your fellow minions."
+      );
+    }
   });
 });
 
