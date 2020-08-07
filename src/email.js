@@ -1,6 +1,6 @@
 const mailjet = require("node-mailjet").connect(
-  process.env.API_KEY,
-  process.env.SECRET_KEY
+  process.env.MAILJET_API_KEY,
+  process.env.MAILJET_SECRET_KEY
 );
 
 function sendEmail(recipient, character, message) {
@@ -10,7 +10,7 @@ function sendEmail(recipient, character, message) {
       Messages: [
         {
           From: {
-            Email: process.env.EMAIL,
+            Email: process.env.MAILJET_EMAIL,
             Name: "The Dealer"
           },
           To: [
