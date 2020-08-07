@@ -153,7 +153,7 @@ app.post("/api/dealAndDistribute", (req, res) => {
   }
 
   // if wrong password just return and don't send emails or anything
-  if (req.body.emails["password"] !== process.env.PASSWORD) {
+  if (req.body.emails["password"] !== process.env.AVALON_PASSWORD) {
     console.log("Wrong password");
     res.status(400).send("Wrong password");
     return;
